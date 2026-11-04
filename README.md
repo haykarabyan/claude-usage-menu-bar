@@ -17,8 +17,10 @@ shows, turn on launch at login, or open the usage page on claude.ai.
 - [Claude Code](https://claude.com/claude-code) signed in with your Claude account (run `claude` once)
 
 The app reads Claude Code's OAuth token from the `Claude Code-credentials` keychain item and calls
-`https://api.anthropic.com/api/oauth/usage`. It refreshes every 60 seconds and whenever you open the
-panel. If the token has expired, run `claude` in a terminal so it can refresh the token.
+`https://api.anthropic.com/api/oauth/usage`. It refreshes every 5 minutes and when you open the panel
+(if the data is over a minute old). That endpoint rate limits per token, and the token is shared with
+Claude Code, so on a 429 the app keeps showing the last data and backs off (5 → 10 → 20 → 30 min).
+If the token has expired, run `claude` in a terminal so it can refresh the token.
 
 ## Build & run
 

@@ -43,7 +43,7 @@ struct UsagePanel: View {
         }
         .padding(16)
         .frame(width: 440)
-        .onAppear { store.refresh(ifOlderThan: 15) }
+        .onAppear { store.refresh(ifOlderThan: 60) }
     }
 
     private var header: some View {
@@ -57,7 +57,7 @@ struct UsagePanel: View {
             }
             Spacer()
             Button {
-                store.refresh()
+                store.refresh(force: true)
             } label: {
                 Image(systemName: "arrow.clockwise")
                     .rotationEffect(.degrees(store.isLoading ? 360 : 0))

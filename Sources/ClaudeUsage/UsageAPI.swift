@@ -27,7 +27,8 @@ enum UsageAPI {
 
     enum APIError: LocalizedError {
         case unauthorized
-        case rateLimited
+        /// `retryAfter` is the server's `Retry-After` hint, when it sends a useful one.
+        case rateLimited(retryAfter: TimeInterval?)
         case http(Int)
 
         var errorDescription: String? {
@@ -35,7 +36,7 @@ enum UsageAPI {
             case .unauthorized:
                 "Claude Code login expired. Run `claude` in Terminal to refresh it."
             case .rateLimited:
-                "Usage endpoint is rate limiting requests. Will retry shortly."
+                "Usage endpoint is rate limiting requests."
             case .http(let code):
                 "Usage request failed (HTTP \(code))."
             }
@@ -53,7 +54,10 @@ enum UsageAPI {
         if let http = response as? HTTPURLResponse, !(200..<300).contains(http.statusCode) {
             switch http.statusCode {
             case 401, 403: throw APIError.unauthorized
-            case 429: throw APIError.rateLimited
+            case 429:
+                // The endpoint often sends `retry-after: 0`, which isn't a usable hint.
+                let retryAfter = http.value(forHTTPHeaderField: "Retry-After").flatMap(TimeInterval.init)
+                throw APIError.rateLimited(retryAfter: retryAfter.flatMap { $0 > 0 ? $0 : nil })
             default: throw APIError.http(http.statusCode)
             }
         }

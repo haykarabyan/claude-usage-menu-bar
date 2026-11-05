@@ -12,6 +12,8 @@ shows, turn on launch at login, or open the usage page on claude.ai.
 
 ![Claude Usage in the menu bar: a two-bar gauge and 76%](docs/menu-bar.png)
 
+![Usage panel with session and weekly limits, reset times, and a pace estimate](docs/usage-panel.png)
+
 ## Requirements
 
 - macOS 14+

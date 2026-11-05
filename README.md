@@ -10,6 +10,8 @@ The menu bar shows a two-bar gauge (session on top, week below) and a percentage
 reset times and a pace estimate. From the gear menu you can choose which percentage the menu bar
 shows, turn on launch at login, or open the usage page on claude.ai.
 
+![Claude Usage in the menu bar: a two-bar gauge and 76%](docs/menu-bar.png)
+
 ## Requirements
 
 - macOS 14+
